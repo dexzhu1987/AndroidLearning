@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SpinnerExercise</string>
+    <string-array name="spinner">
+        <item>Pikachu</item>
+        <item>Charmander</item>
+        <item>Squirtle</item>
+        <item>Bulbasaur</item>
+    </string-array>
+    <string name="Pikachu">Pikachu</string>
+    <string name="Charmander">Charmander</string>
+    <string name="Squirtle">Squirtle</string>
+    <string name="Bulbasaur">Bulbasaur</string>
+
+</resources>
