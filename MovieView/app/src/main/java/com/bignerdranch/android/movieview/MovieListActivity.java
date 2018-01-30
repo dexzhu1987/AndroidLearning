@@ -33,30 +33,45 @@ public class MovieListActivity extends AppCompatActivity {
     private void updateUI() {
         MovieLibrary movieLibrary = MovieLibrary.get(MovieListActivity.this);
         List<Movie> movies = movieLibrary.getMovies();
-        System.out.println(movies.size());
+        for (int i=0; i<movies.size(); i++){
+            System.out.println(movies.get(i));
+        }
         mAdapter = new MovieAdapter(movies);
         mMovieRececylerView.setAdapter(mAdapter);
     }
 
-    private class MovieHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class MovieHolder extends RecyclerView.ViewHolder{
         private ImageButton mMovieImageButton;
-        private Movie mMovie;
+        private ImageButton mMovieImageButton2;
+        private ImageButton mMovieImageButton3;
+        private  ArrayList<Movie>  mMovies;
 
         public MovieHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_movie, parent, false));
-            itemView.setOnClickListener(this);
             mMovieImageButton = itemView.findViewById(R.id.movieImageButton);
+            mMovieImageButton2 = itemView.findViewById(R.id.movieImageButton2);
+            mMovieImageButton3 = itemView.findViewById(R.id.movieImageButton3);
         }
 
 
-        public void bind(Movie movie){
-            mMovie = movie;
-            mMovieImageButton.setImageResource(movie.getImage());
+        public void bind(ArrayList<Movie> movies){
+            mMovies = movies;
+            mMovieImageButton.setImageResource(movies.get(0).getImage());
+            startMovie(mMovieImageButton, movies.get(0));
+            mMovieImageButton2.setImageResource(movies.get(1).getImage());
+            startMovie(mMovieImageButton2, movies.get(1));
+            mMovieImageButton3.setImageResource(movies.get(2).getImage());
+            startMovie(mMovieImageButton3, movies.get(2));
         }
 
-        public void onClick(View view) {
-            Intent intent = MovieActivity.newIntent(MovieListActivity.this, mMovie.getUUID());
-            startActivity(intent);
+        public void startMovie(ImageButton button, final Movie movie) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = MovieActivity.newIntent(MovieListActivity.this,movie.getUUID());
+                    startActivity(intent);
+                }
+            });
         }
 
 
@@ -78,13 +93,17 @@ public class MovieListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MovieHolder holder, int position) {
-            Movie movie = mAllMovies.get(position);
-            holder.bind(movie);
+            position = position*3;
+            ArrayList<Movie> movies = new ArrayList<>();
+            movies.add(mAllMovies.get(position));
+            movies.add(mAllMovies.get(position+1));
+            movies.add(mAllMovies.get(position+2));
+            holder.bind(movies);
         }
 
         @Override
         public int getItemCount() {
-            return mAllMovies.size();
+            return mAllMovies.size()/3;
         }
 
     }
