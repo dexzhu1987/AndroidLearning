@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MovieView</string>
+    <string name="title_movielist">Favourite Movies</string>
+</resources>
