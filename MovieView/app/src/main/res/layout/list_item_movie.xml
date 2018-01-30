@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/movieImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        w
+        app:srcCompat="@drawable/catch_me_if_you_can" />
+
+    <ImageButton
+        android:id="@+id/movieImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/catch_me_if_you_can" />
 
     <ImageButton
         android:id="@+id/movieImageButton"

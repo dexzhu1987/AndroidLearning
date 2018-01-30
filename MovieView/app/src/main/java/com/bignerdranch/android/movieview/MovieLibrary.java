@@ -55,7 +55,6 @@ public class MovieLibrary {
 //        }
 
         for (int n = 0; n < drawableId.size(); n++) {
-            System.out.println(drawableId.toString());
             Movie movie = new Movie();
             movie.setImage(drawableId.get(n));
             String name = context.getResources().getResourceEntryName(drawableId.get(n));
@@ -68,6 +67,8 @@ public class MovieLibrary {
             movie.setDescription(desprition);
             mMovies.add(movie);
         }
+
+        System.out.println(mMovies.toString());
 
     }
 
