@@ -36,6 +36,6 @@ public class MovieListActivity extends SingleFragmentActivity implements MovieLi
         }
     }
 
-    
+
 }
 
