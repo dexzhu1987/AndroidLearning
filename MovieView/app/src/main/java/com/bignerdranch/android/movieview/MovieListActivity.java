@@ -8,8 +8,7 @@ import android.support.v4.app.Fragment;
 
 import java.util.UUID;
 
-public class MovieListActivity extends SingleFragmentActivity implements MovieListFragment.Callbacks, MovieFragment.Callbacks{
-
+public class MovieListActivity extends SingleFragmentActivity implements MovieListFragment.Callbacks{
     @Override
     protected Fragment createFragment() {
         return new MovieListFragment();
@@ -19,8 +18,6 @@ public class MovieListActivity extends SingleFragmentActivity implements MovieLi
     protected int getLayoutResiD(){
         return R.layout.activity_masterdetail;
     }
-
-
 
     @Override
     public void onMovieSelected(Movie movie) {

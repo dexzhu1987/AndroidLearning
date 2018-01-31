@@ -38,7 +38,6 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-
         mCallbacks = (Callbacks) context;
     }
 
@@ -82,7 +81,7 @@ public class MovieListFragment extends Fragment {
         return view;
     }
 
-    private void updateUI() {
+    public void updateUI() {
         MovieLibrary movieLibrary = MovieLibrary.get(getActivity());
         List<Movie> movies = movieLibrary.getMovies();
         for (int i = 0; i < movies.size(); i++) {

@@ -24,30 +24,9 @@ import java.util.UUID;
 
 public class MovieFragment extends Fragment {
     private static final String MOVIEID = "movieid";
-
     private Movie mMovie;
-
     private ImageView mImageView;
     private TextView mTextView;
-
-    private Callbacks mCallbacks;
-
-
-    public interface Callbacks{
-        void onMovieUpdated(Movie movie);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallbacks = (Callbacks) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
 
     public static MovieFragment newIntent(UUID movieId){
         Bundle args = new Bundle();
