@@ -8,22 +8,30 @@
     tools:context="com.bignerdranch.android.movieview.MovieActivity">
 
 
-
-
     <ImageView
+        android:layout_marginTop="10dp"
         android:id="@+id/imageView_singlemovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/catch_me_if_you_can" />
 
-
-    <TextView
-        android:id="@+id/textview_singlemovie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <ScrollView
+        android:layout_width="300dp"
+        android:layout_height="270dp"
         android:layout_marginTop="30dp"
-        android:textSize="20dp"/>
+        android:layout_gravity="center"
+        android:background="#d3d3d3">
+
+        <TextView
+            android:id="@+id/textview_singlemovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:textSize="18dp"/>
+
+    </ScrollView>
+
+
 
 
 </LinearLayout>
