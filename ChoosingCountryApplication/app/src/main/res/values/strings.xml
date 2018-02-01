@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ChoosingCountryApplication</string>
+    <string name="canada">Canada</string>
+    <string name="brazil">Brazil</string>
+    <string name="china">China</string>
+    <string name="dominica">Dominica Republic</string>
+    <string name="peru">Peru</string>
+    <string name="japan">Japan</string>
+    <string name="mexico">Mexico</string>
+    <string name="taiwan">Taiwai</string>
+    <string name="turkey">Turkey</string>
+</resources>
