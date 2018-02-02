@@ -60,7 +60,19 @@ public class CrimeLab {
     }
 
     public Crime getCrime(UUID id){
-        return null;
+        CrimeCursorWrapper curssor = queryCrimes(CrimeTable.Cols.UUID + " =? ",
+                new String[]{id.toString()}
+                );
+        try {
+            if (curssor.getCount() == 0){
+                return null;
+            }
+            curssor.moveToFirst();
+            return curssor.getCrime();
+        } finally {
+            curssor.close();
+        }
+
     }
 
 

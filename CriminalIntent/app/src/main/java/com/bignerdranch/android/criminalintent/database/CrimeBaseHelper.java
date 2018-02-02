@@ -20,11 +20,6 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("create table " + CrimeTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 CrimeTable.Cols.UUID + ", " +
@@ -33,5 +28,10 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
                 CrimeTable.Cols.SOLVED +
                 ")"
         );
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 }

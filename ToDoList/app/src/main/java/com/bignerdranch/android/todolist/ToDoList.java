@@ -41,7 +41,7 @@ public class ToDoList {
         mDatabase.insert(ToDoTable.NAME, null, values);
     }
 
-    public List<ToDo> getCrimes() {
+    public List<ToDo> getToDos() {
         List<ToDo> crimes = new ArrayList<>();
 
         ToDoCursorWrapper cursor = queryToDos(null,null);
@@ -59,7 +59,18 @@ public class ToDoList {
     }
 
     public ToDo getToDo(UUID id){
-        return null;
+        ToDoCursorWrapper cursor = queryToDos(ToDoTable.Cols.UUID + " =? ",
+                new String[]{id.toString()}
+        );
+        try {
+            if (cursor.getCount() == 0){
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getToDo();
+        } finally {
+            cursor.close();
+        }
     }
 
 
@@ -67,7 +78,7 @@ public class ToDoList {
         String uuidString = toDo.getUUID().toString();
         ContentValues values = getContentValues(toDo);
 
-        mDatabase.update(ToDoTable.NAME, values, ToDoTable.Cols.UUID + " = ?", new String[] { uuidString});
+        mDatabase.update(ToDoTable.NAME, values, ToDoTable.Cols.UUID + " = ?", new String[] {uuidString});
     }
 
     private static ContentValues getContentValues(ToDo toDo){

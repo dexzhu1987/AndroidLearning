@@ -20,16 +20,16 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("create table " + ToDoTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 ToDoTable.Cols.UUID + ", " +
                 ToDoTable.Cols.CONTENT +
                 ")"
         );
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 }

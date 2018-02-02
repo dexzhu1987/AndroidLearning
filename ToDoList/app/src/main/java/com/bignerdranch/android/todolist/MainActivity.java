@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
    private AlertDialog mAlertDialog;
    private ListView mListView;
    private ArrayAdapter<String> mArrayAdapter;
-   private ArrayList<String> mToDoList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +31,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mToDoList = new ArrayList<>();
-
         mListView = findViewById(R.id.to_do_list);
-        mArrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mToDoList);
-        mListView.setAdapter(mArrayAdapter);
+
+        updateUI();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +42,20 @@ public class MainActivity extends AppCompatActivity {
                 addToDo();
             }
         });
+    }
+
+    private void updateUI() {
+        ToDoList toDoList = ToDoList.get(this);
+        List<ToDo> ToDoList = toDoList.getToDos();
+        ArrayList<String> mToDoList = new ArrayList<>();
+        for (ToDo todo: ToDoList){
+            mToDoList.add(todo.getContent());
+        }
+
+        mArrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mToDoList);
+        mListView.setAdapter(mArrayAdapter);
+
     }
 
     private void addToDo(){
@@ -61,10 +72,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String todo = input.getText().toString();
-                mToDoList.add(todo) ;
-                mArrayAdapter.notifyDataSetChanged();
-                Snackbar.make(findViewById(R.id.fab), todo + " is added", Snackbar.LENGTH_LONG)
+                String todoString = input.getText().toString();
+                ToDo toDo = new ToDo();
+                toDo.setContent(todoString);
+                ToDoList.get(MainActivity.this).addToDo(toDo);
+                updateUI();
+                Snackbar.make(findViewById(R.id.fab), todoString + " is added", Snackbar.LENGTH_LONG)
                         .setAction("Action",null).show();
             }
         });
