@@ -41,6 +41,13 @@ public class ToDoList {
         mDatabase.insert(ToDoTable.NAME, null, values);
     }
 
+    public void deleteToDo(ToDo toDo){
+        ContentValues values = getContentValues(toDo);
+        UUID id = toDo.getUUID();
+        mDatabase.delete(ToDoTable.NAME, ToDoTable.Cols.UUID + " =? ",
+                new String[]{id.toString()});
+    }
+
     public List<ToDo> getToDos() {
         List<ToDo> crimes = new ArrayList<>();
 
@@ -85,6 +92,7 @@ public class ToDoList {
         ContentValues values = new ContentValues();
         values.put(ToDoTable.Cols.UUID, toDo.getUUID().toString());
         values.put(ToDoTable.Cols.CONTENT,toDo.getContent());
+        values.put(ToDoTable.Cols.TITLE, toDo.getTitle());
 
         return values;
     }

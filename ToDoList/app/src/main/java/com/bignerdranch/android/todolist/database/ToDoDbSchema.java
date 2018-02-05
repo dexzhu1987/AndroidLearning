@@ -11,6 +11,7 @@ public class ToDoDbSchema {
         public static final class Cols{
             public static final String UUID = "uuid";
             public static final String CONTENT = "content";
+            public static final String TITLE = "title";
         }
     }
 }

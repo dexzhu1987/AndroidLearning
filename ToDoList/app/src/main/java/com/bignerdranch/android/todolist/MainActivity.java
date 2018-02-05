@@ -1,6 +1,7 @@
 package com.bignerdranch.android.todolist;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -46,17 +48,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI() {
         ToDoList toDoList = ToDoList.get(this);
-        List<ToDo> ToDoList = toDoList.getToDos();
+        final List<ToDo> ToDoList = toDoList.getToDos();
         ArrayList<String> mToDoList = new ArrayList<>();
         for (ToDo todo: ToDoList){
-            mToDoList.add(todo.getContent());
+            mToDoList.add(todo.getTitle());
         }
+
+
 
         mArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, mToDoList);
         mListView.setAdapter(mArrayAdapter);
 
+        if (toDoList.get(MainActivity.this)!=null){
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = ToDoActivity.newIntent(MainActivity.this, ToDoList.get(position).getUUID());
+                    startActivity(intent);
+                }
+            });
+        }
+
     }
+
+
 
     private void addToDo(){
         final EditText input = new EditText(this);
@@ -74,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String todoString = input.getText().toString();
                 ToDo toDo = new ToDo();
-                toDo.setContent(todoString);
+                toDo.setTitle(todoString);
+                toDo.setContent("Input here for details");
                 ToDoList.get(MainActivity.this).addToDo(toDo);
                 updateUI();
                 Snackbar.make(findViewById(R.id.fab), todoString + " is added", Snackbar.LENGTH_LONG)
@@ -114,5 +131,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
     }
 }

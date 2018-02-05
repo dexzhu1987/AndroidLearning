@@ -20,9 +20,11 @@ public class ToDoCursorWrapper extends CursorWrapper {
     public ToDo getToDo(){
         String uuidString = getString(getColumnIndex(ToDoTable.Cols.UUID));
         String content  = getString(getColumnIndex(ToDoTable.Cols.CONTENT));
+        String title = getString(getColumnIndex(ToDoTable.Cols.TITLE));
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
         toDo.setContent(content);
+        toDo.setTitle(title);
 
         return toDo;
     }

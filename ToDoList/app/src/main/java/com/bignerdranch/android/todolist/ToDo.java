@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public class ToDo {
     private UUID mUUID;
+    private String mTitle;
     private String mContent;
 
     public ToDo(){
@@ -20,6 +21,14 @@ public class ToDo {
 
     public UUID getUUID() {
         return mUUID;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String content) {
+        mTitle = content;
     }
 
     public String getContent() {

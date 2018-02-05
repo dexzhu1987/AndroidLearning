@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    tools:context="com.bignerdranch.android.todolist.ToDoActivity">
+
+    <EditText
+        android:id="@+id/to_do_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Display1"
+        android:text="Title"
+        android:textAlignment="center"
+        android:padding="5dp"
+        android:textSize="50dp"
+        android:background="#00000000"
+        android:hint="Input your title"/>
+
+    <EditText
+        android:id="@+id/to_do_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:background="#00000000"
+        android:hint="Input here for more detailed of your activity"/>
+
+    <ImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_light"
+        android:src="@drawable/ic_action_delete"
+        android:padding="10dp"
+        />
+
+</LinearLayout>
