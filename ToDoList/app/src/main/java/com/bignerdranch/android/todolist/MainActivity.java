@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 String todoString = input.getText().toString();
                 ToDo toDo = new ToDo();
                 toDo.setTitle(todoString);
-                toDo.setContent("Input here for details");
+                toDo.setContent("");
                 ToDoList.get(MainActivity.this).addToDo(toDo);
                 updateUI();
                 Snackbar.make(findViewById(R.id.fab), todoString + " is added", Snackbar.LENGTH_LONG)

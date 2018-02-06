@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center|top"
-    tools:context="com.bignerdranch.android.todolist.ToDoActivity">
+    tools:context="com.bignerdranch.android.todolist.ToDoActivity"
+    android:id="@+id/to_do_activity">
 
     <EditText
         android:id="@+id/to_do_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         style="@style/Base.TextAppearance.AppCompat.Display1"
         android:text="Title"
         android:textAlignment="center"
@@ -20,22 +22,37 @@
         android:background="#00000000"
         android:hint="Input your title"/>
 
-    <EditText
-        android:id="@+id/to_do_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:padding="10dp"
-        android:background="#00000000"
-        android:hint="Input here for more detailed of your activity"/>
 
-    <ImageButton
-        android:id="@+id/delete_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_light"
-        android:src="@drawable/ic_action_delete"
-        android:padding="10dp"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8">
+            <EditText
+                android:id="@+id/to_do_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="#00000000"
+                android:hint="Input here for more detailed of your activity" />
+
+            </ScrollView>
+
+            <ImageButton
+                android:id="@+id/delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@android:color/holo_red_light"
+                android:src="@drawable/ic_action_delete"
+                android:padding="10dp"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
 
 </LinearLayout>

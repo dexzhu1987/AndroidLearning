@@ -20,7 +20,6 @@ import com.bignerdranch.android.todolist.database.ToDoDbSchema.ToDoTable;
 
 public class ToDoList {
     private static ToDoList sToDoList;
-
     private SQLiteDatabase mDatabase;
     private Context mContext;
 
