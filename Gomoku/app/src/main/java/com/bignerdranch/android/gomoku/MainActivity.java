@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void play_game() {
         Random r =  new Random();
         turnPlay = r.nextInt(2)+1;
+        winner_play = 0;
 
         if (turnPlay==1){
             Toast.makeText(context, "Player play first", Toast.LENGTH_SHORT).show();
@@ -80,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
             make_a_move();
         }else {
             findBotMove();
+            make_a_move();
         }
     }
+
+    private final int[] iRow={-1,-1,-1,0,1,1,1,0};
+    private final int[] iCol={-1,0,1,1,1,0,-1,-1};
 
     private void findBotMove() {
         List<Integer> listX = new ArrayList<>();
@@ -92,17 +97,84 @@ public class MainActivity extends AppCompatActivity {
                 if (valueCell[i][j]!=0){
                     for (int t=1; t<=RANGE; t++){
                         for (int k=0; k<8; k++){
-                            int x=1+iRow[k]*t;
+                            int x=i+iRow[k]*t;
                             int y=j+iCol[k]*t;
+                            if (inBoard(x,y) && valueCell[x][y]==0) {
+                                listX.add(x);
+                                listY.add(y);
+                            }
                         }
                     }
                 }
         }
+        int lx=listX.get(0);
+        int ly=listY.get(0);
+
+        int res = Integer.MAX_VALUE-10;
+        for (int i=0;i<listX.size();i++){
+            int x=listX.get(i);
+            int y=listY.get(i);
+            valueCell[x][y]=2;
+            int rr=getValue_Position();
+            if (rr<res){
+                res=rr; lx=x; ly=y;
+            }
+            valueCell[x][y]=0;
+        }
+        xMove=lx; yMove=ly;
+    }
+
+    private int getValue_Position() {
+        int rr=0;
+        int p1=turnPlay;
+
+        for (int i=0; i<MAXN; i++){
+            rr+=CheckValue(MAXN-1,i,-1,0,p1);
+        }
+        for (int i=0; i<MAXN; i++){
+            rr+=CheckValue(i,MAXN-1,0,-1,p1);
+        }
+
+
+        for (int i=MAXN-1; i>=0; i--) {
+            rr+=CheckValue(i,MAXN-1,-1,-1,p1);
+        }
+        for (int i=MAXN-2; i>=0; i--) {
+            rr+=CheckValue(MAXN-1,i,-1,-1,p1);
+        }
+
+
+        for (int i=MAXN-1; i>=0; i--) {
+            rr+=CheckValue(i,0,-1,1,p1);
+        }
+        for (int i=MAXN-1; i>=1; i--) {
+            rr+=CheckValue(MAXN-1,i,-1,1,p1);
+        }
+        return rr;
+    }
+
+    private int CheckValue(int xd, int yd, int vx, int vy, int p1) {
+        int i,j;
+        int rr=0;
+        i=xd; j=yd;
+        String st=String.valueOf(valueCell[i][j]);
+        while (true){
+            i+=vx; j+=vy;
+            if(inBoard(i,j)){
+                st=st+String.valueOf(valueCell[i][j]);
+                if (st.length()==6){
+                    rr+=Eval(st,p1);
+                    st=st.substring(1,6);
+                }
+            } else break;
+        }
+        return rr;
     }
 
 
     private void playerTurn() {
         tvTurn.setText("Player");
+        firstMove=false;
         isClicked = false;
     }
 
@@ -135,18 +207,32 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean checkWinner() {
         if (winner_play!=0) return true;
+
         VectorEnd(xMove,0,0,1,xMove,yMove);
+        VectorEnd(0,yMove,1,0,xMove,yMove);
+
+        if (xMove+yMove>=MAXN-1){
+            VectorEnd(MAXN-1,xMove+yMove-MAXN+1,-1,1,xMove,yMove);
+        } else {
+            VectorEnd(xMove+yMove,0,-1,1,xMove,yMove);
+        }
+
+        if(xMove<=yMove){
+            VectorEnd(xMove-yMove+MAXN-1,MAXN-1,-1,-1,xMove,yMove);
+        }else {
+            VectorEnd(MAXN-1,MAXN-1-(xMove-yMove),-1,-1,xMove,yMove);
+        }
+        if (winner_play!=0) return true;
         return false;
     }
 
     private void VectorEnd(int xx, int yy, int vx, int vy, int rx, int ry) {
-
         if (winner_play!=0) return;
         final int RANGE=4;
         int i, j;
         int xbelow = rx-RANGE*vx;
         int ybelow = ry-RANGE*vy;
-        int xabove = ry+RANGE*vy;
+        int xabove = rx+RANGE*vx;
         int yabove = ry+RANGE*vy;
         String st="";
         i=xx; j=yy;
@@ -231,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
                 ivCell[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(valueCell[xMove][yMove] == 0) {
+                        if(valueCell[x][y] == 0) {
                             if (turnPlay==1 || !isClicked){
                                 isClicked=true;
                                 xMove=x; yMove=y;
@@ -255,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int Eval(String st, int p1){
         int b1 = 1, b2 =1;
-        if (p1==1){
-            b1= 2;
-            b2= 1;
+        if (p1 == 1){
+            b1 = 2;
+            b2 = 1;
         } else {
             b1 = 1;
             b2 = 2;
