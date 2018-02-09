@@ -3,9 +3,11 @@ package com.bignerdranch.android.gomoku;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,20 +20,20 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    final static int MAXN=15;
-    private Context context;
+    protected final static int MAXN=15;
+    protected Context context;
 
-    private ImageView[][] ivCell = new ImageView[MAXN][MAXN];
-    private Drawable[] drawCell = new Drawable[4];
+    protected ImageView[][] ivCell = new ImageView[MAXN][MAXN];
+    protected Drawable[] drawCell = new Drawable[4];
 
-    private Button btnPlay;
-    private TextView tvTurn;
+    protected Button btnPlay;
+    protected TextView tvTurn;
 
-    private int[][] valueCell =  new int [MAXN][MAXN];
-    private  int winner_play;
-    private boolean firstMove;
-    private int xMove, yMove;
-    private int turnPlay;
+    protected int[][] valueCell =  new int [MAXN][MAXN];
+    protected   int winner_play;
+    protected boolean firstMove;
+    protected int xMove, yMove;
+    protected int turnPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void play_game() {
+    protected void play_game() {
         Random r =  new Random();
         turnPlay = r.nextInt(2)+1;
         winner_play = 0;
@@ -73,7 +75,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void botTurn() {
+    private void playerTurn() {
+        Log.i("Gomoku", "Player1 turn: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
+        tvTurn.setText("Player");
+        firstMove=false;
+        isClicked=false;
+    }
+
+    protected void botTurn() {
+        Log.i("Gomoku", "Bot1 turn: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
         tvTurn.setText("Bot");
         if (firstMove){
             firstMove=false;
@@ -171,14 +181,8 @@ public class MainActivity extends AppCompatActivity {
         return rr;
     }
 
-
-    private void playerTurn() {
-        tvTurn.setText("Player");
-        firstMove=false;
-        isClicked = false;
-    }
-
-    private void make_a_move() {
+    protected void make_a_move() {
+        Log.i("Gomoku", "Make a move: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
         ivCell[xMove][yMove].setImageDrawable(drawCell[turnPlay]);
         valueCell[xMove][yMove] = turnPlay;
         if (noEmptyCell()) {
@@ -278,8 +282,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     private void init_game() {
         firstMove = true;
         for (int i=0; i<MAXN; i++){
@@ -297,9 +299,9 @@ public class MainActivity extends AppCompatActivity {
         drawCell[2] = context.getResources().getDrawable(R.drawable.cross);
     }
 
-    private boolean isClicked;
+    protected boolean isClicked;
 
-    private void designBroadGame() {
+    protected void designBroadGame() {
 
         int sizeofCells = Math.round(ScreenWidth()/MAXN);
         LinearLayout.LayoutParams lpRow = new LinearLayout.LayoutParams(sizeofCells*MAXN, sizeofCells);
@@ -310,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i<MAXN; i++){
             LinearLayout linRow =  new LinearLayout(this);
             for (int j=0; j<MAXN; j++){
+                Log.i("Gomoku", "Before click: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
                 ivCell[i][j] = new ImageView(this);
                 ivCell[i][j].setBackground(drawCell[3]);
                 final int x=i;
@@ -317,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 ivCell[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.i("Gomoku", "After click: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
                         if(valueCell[x][y] == 0) {
                             if (turnPlay==1 || !isClicked){
                                 isClicked=true;
