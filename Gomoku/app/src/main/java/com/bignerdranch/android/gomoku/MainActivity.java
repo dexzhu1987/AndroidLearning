@@ -1,9 +1,11 @@
 package com.bignerdranch.android.gomoku;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -28,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
     protected Button btnPlay;
     protected TextView tvTurn;
-
+    protected ImageView mImageView;
+    
     protected int[][] valueCell =  new int [MAXN][MAXN];
-    protected   int winner_play;
+    protected int winner_play;
     protected boolean firstMove;
     protected int xMove, yMove;
     protected int turnPlay;
+    protected AlertDialog mAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
     private void setListen() {
         btnPlay = findViewById(R.id.btnPlay);
         tvTurn = findViewById(R.id.tvTurn);
+        mImageView = findViewById(R.id.imgTurn);
+        
 
         btnPlay.setText("Play Game");
         tvTurn.setText("Press button Play Game");
+        mImageView.setImageDrawable(drawCell[0]);
+        
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +69,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void loadResouces() {
+        drawCell[3] = context.getResources().getDrawable(R.drawable.cell_bg);
+        drawCell[0] = null;
+        drawCell[1] = context.getResources().getDrawable(R.drawable.circle); //player
+        drawCell[2] = context.getResources().getDrawable(R.drawable.cross);
+    }
+
+
+    private void init_game() {
+        firstMove = true;
+        for (int i=0; i<MAXN; i++){
+            for (int j=0; j<MAXN; j++){
+                ivCell[i][j].setImageDrawable(drawCell[0]);
+                valueCell[i][j]=0;
+            }
+        }
+        mImageView.setImageDrawable(drawCell[0]);
+    }
+    
     protected void play_game() {
         Random r =  new Random();
         turnPlay = r.nextInt(2)+1;
         winner_play = 0;
+
+        toggleCells(true);
 
         if (turnPlay==1){
             Toast.makeText(context, "Player play first", Toast.LENGTH_SHORT).show();
@@ -78,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     private void playerTurn() {
         Log.i("Gomoku", "Player1 turn: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
         tvTurn.setText("Player");
+        mImageView.setImageDrawable(drawCell[1]);
         firstMove=false;
         isClicked=false;
     }
@@ -85,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     protected void botTurn() {
         Log.i("Gomoku", "Bot1 turn: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
         tvTurn.setText("Bot");
+        mImageView.setImageDrawable(drawCell[2]);
         if (firstMove){
             firstMove=false;
             xMove=7; yMove=7;
@@ -182,6 +214,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void make_a_move() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Winner is: ");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        mAlertDialog = builder.create();
+
         Log.i("Gomoku", "Make a move: " + turnPlay + " xMove: " + xMove + " yMove" + yMove );
         ivCell[xMove][yMove].setImageDrawable(drawCell[turnPlay]);
         valueCell[xMove][yMove] = turnPlay;
@@ -190,14 +232,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         } else if (checkWinner()) {
             if (winner_play==1) {
-                Toast.makeText(context, "Winner is player",Toast.LENGTH_SHORT).show();
                 tvTurn.setText("Winner is player");
+                mAlertDialog.setMessage("Player \n\n(Press Play Game for a new turn)");
             } else {
-                Toast.makeText(context,"Winner is bot", Toast.LENGTH_SHORT).show();
                 tvTurn.setText("Winner is bot");
+                mAlertDialog.setMessage("Bot \n\n(Press Play Game for a new turn)");
             }
-
-                return;
+            toggleCells(false);
+            mAlertDialog.show();
+            return;
         }
         
         if (turnPlay==1){
@@ -209,7 +252,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkWinner() {
+    protected void toggleCells(boolean enabled) {
+        for (ImageView[] imageViews : ivCell) {
+            for (ImageView imageView : imageViews) {
+                imageView.setEnabled(enabled);
+            }
+        }
+    }
+
+    protected boolean checkWinner() {
         if (winner_play!=0) return true;
 
         VectorEnd(xMove,0,0,1,xMove,yMove);
@@ -274,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         return (i-xbelow)*(i-xabove)<=0;
     }
 
-    private boolean noEmptyCell() {
+    protected boolean noEmptyCell() {
         for (int i=0; i<MAXN; i++){
             for (int j=0; j<MAXN; j++)
                 if (valueCell[i][j]==0) return false;
@@ -282,22 +333,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void init_game() {
-        firstMove = true;
-        for (int i=0; i<MAXN; i++){
-            for (int j=0; j<MAXN; j++){
-                ivCell[i][j].setImageDrawable(drawCell[0]);
-                valueCell[i][j]=0;
-            }
-        }
-    }
-
-    private void loadResouces() {
-        drawCell[3] = context.getResources().getDrawable(R.drawable.cell_bg);
-        drawCell[0] = null;
-        drawCell[1] = context.getResources().getDrawable(R.drawable.circle); //player
-        drawCell[2] = context.getResources().getDrawable(R.drawable.cross);
-    }
 
     protected boolean isClicked;
 
