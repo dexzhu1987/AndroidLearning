@@ -31,7 +31,7 @@ import java.util.List;
  * Created by dexunzhu on 2018-02-06.
  */
 
-public class PhotoGalleryFragment extends Fragment {
+public class PhotoGalleryFragment extends VisibleFragment {
 
     private static final String TAG = "PhotoGalleryFragement";
 
@@ -163,16 +163,30 @@ public class PhotoGalleryFragment extends Fragment {
 
     private class PhotoHolder extends RecyclerView.ViewHolder{
         private ImageView mImageView;
+        private GalleryItem mGalleryItem;
 
         public PhotoHolder(View itemView){
             super(itemView);
 
             mImageView = itemView.findViewById(R.id.item_image_view);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = PhotoPageActiviy.newIntent(getActivity(), mGalleryItem.getPhotoPageUri());
+                    startActivity(i);
+                }
+            });
         }
 
         public void bindDrawable(Drawable drawable){
             mImageView.setImageDrawable(drawable);
         }
+
+        public void bindGalleryItem(GalleryItem galleryItem){
+            mGalleryItem = galleryItem;
+        }
+
+
     }
 
     private class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
@@ -192,6 +206,7 @@ public class PhotoGalleryFragment extends Fragment {
         @Override
         public void onBindViewHolder(PhotoHolder holder, int position) {
             GalleryItem galleryItem = mGalleryItems.get(position);
+            holder.bindGalleryItem(galleryItem);
             Drawable placeholder = getResources().getDrawable(R.drawable.ic_launcher_foreground);
             holder.bindDrawable(placeholder);
             mThumbnailDownloader.queueThumbnail(holder, galleryItem.getUrl());
