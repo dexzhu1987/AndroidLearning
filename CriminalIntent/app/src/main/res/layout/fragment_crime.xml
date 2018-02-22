@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,39 +22,39 @@
                 android:id="@+id/crime_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:scaleType="centerInside"
-                android:cropToPadding="true"
                 android:background="@android:color/darker_gray"
                 android:contentDescription="@string/crime_photo_no_image_description"
-                android:focusable="true"/>
+                android:cropToPadding="true"
+                android:focusable="true"
+                android:scaleType="centerInside" />
 
             <ImageButton
+                android:id="@+id/crime_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/crime_camera"
-                android:src="@android:drawable/ic_menu_camera"
-                android:contentDescription="@string/crime_photo_button_descritioption"/>
+                android:contentDescription="@string/crime_photo_button_descritioption"
+                android:src="@android:drawable/ic_menu_camera" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/crime_title_label"/>
+                android:text="@string/crime_title_label" />
 
             <EditText
-            android:id="@+id/crime_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/crime_title_hint"
-            android:labelFor="@+id/crime_title"/>
+                android:id="@+id/crime_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/crime_title_hint"
+                android:labelFor="@+id/crime_title" />
 
 
         </LinearLayout>
@@ -65,8 +65,7 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/crime_title_label"/>
-
+        android:text="@string/crime_title_label" />
 
 
     <Button
@@ -78,18 +77,18 @@
         android:id="@+id/crime_solved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/crime_solved_label"/>
+        android:text="@string/crime_solved_label" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/crime_suspect"
-        android:text="@string/crime_supsect_text"/>
-
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/crime_supsect_text" />
+
+    <Button
         android:id="@+id/crime_report"
-        android:text="@string/crime_report_text"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_report_text" />
 
 </LinearLayout>
