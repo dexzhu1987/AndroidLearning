@@ -9,4 +9,12 @@
         <item>Rock</item>
         <item>Reggae</item>
     </string-array>
+
+    <string-array name="rating">
+        <item>1 Star</item>
+        <item>2 Star</item>
+        <item>3 Star</item>
+        <item>4 Star</item>
+        <item>5 Star</item>
+    </string-array>
 </resources>

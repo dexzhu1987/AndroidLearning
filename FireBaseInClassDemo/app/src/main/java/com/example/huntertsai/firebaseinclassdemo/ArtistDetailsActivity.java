@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +31,9 @@ public class ArtistDetailsActivity extends AppCompatActivity {
     private TextView mArtistName, mGenre;
     private EditText mTrack;
     private ListView mListTracks;
-    private List<String> mTracks;
+    private List<Track> mTracks;
     private String artistID;
-    private List<String> trackIds;
+    private Spinner mSpinner;
 
 
     public static Intent newIntent(Context context, String artistId){
@@ -54,8 +55,8 @@ public class ArtistDetailsActivity extends AppCompatActivity {
        mGenre = findViewById(R.id.genre_details);
        mTrack = findViewById(R.id.track_details);
        mListTracks = findViewById(R.id.list_view_track);
+       mSpinner = findViewById(R.id.spinner_details);
        mTracks = new ArrayList<>();
-       trackIds = new ArrayList<>();
 
        mFirebaseDataBase.child(artistID).addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
@@ -76,21 +77,15 @@ public class ArtistDetailsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mFirebaseDataBase.child(artistID).child("track").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("tracks").child(artistID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mTracks.clear();
-                trackIds.clear();
                 for (DataSnapshot artistSnapshot : dataSnapshot.getChildren()){
-                    mTracks.add(artistSnapshot.getValue().toString());
-                    trackIds.add(artistSnapshot.getKey().toString());
+                    Track track = artistSnapshot.getValue(Track.class);
+                    mTracks.add(track);
                 }
-                String message = "starts: ";
-                for (int i=0; i<trackIds.size(); i++){
-                    message += trackIds.get(i) + ": ";
-                }
-                Log.i("ArtistActivity",message);
-                TracksArrayAdapter tracksArrayAdapter = new TracksArrayAdapter(ArtistDetailsActivity.this, mTracks, trackIds,artistID);
+                TracksArrayAdapter tracksArrayAdapter = new TracksArrayAdapter(ArtistDetailsActivity.this, mTracks,artistID);
                 mListTracks.setAdapter(tracksArrayAdapter);
 
             }
@@ -107,13 +102,16 @@ public class ArtistDetailsActivity extends AppCompatActivity {
 
 
     public void add_Track(View view) {
+        String rating = mSpinner.getSelectedItem().toString();
         String trackName = mTrack.getText().toString().trim();
         String id = mFirebaseDataBase.push().getKey(); //push()->auto gen key and get key
+        Track track = new Track(trackName,rating,id);
         Toast(trackName + " Added");
 
-        mFirebaseDataBase.child(artistID).child("track").child(id).setValue(trackName);
+        FirebaseDatabase.getInstance().getReference().child("tracks").child(artistID).child(id).setValue(track);
 
         mTrack.setText("");
+        mSpinner.setSelection(0);
 
     }
 

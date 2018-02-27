@@ -84,6 +84,12 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist>{
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 genreInput.setAdapter(spinnerAdapter);
+                for (int i=0; i<list.size(); i++){
+                    if (artist.getGenre().equals(list.get(i))){
+                        int position=i;
+                        genreInput.setSelection(position);
+                    }
+                }
                 spinnerAdapter.notifyDataSetChanged();
 
                 LinearLayout linearLayout = new LinearLayout(getContext());
