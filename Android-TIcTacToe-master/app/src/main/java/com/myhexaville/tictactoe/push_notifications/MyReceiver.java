@@ -35,6 +35,7 @@ public class MyReceiver extends BroadcastReceiver {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         User me = dataSnapshot.getValue(User.class);
 
+
                         OkHttpClient client = new OkHttpClient();
 
                         String to = intent.getExtras().getString("to");

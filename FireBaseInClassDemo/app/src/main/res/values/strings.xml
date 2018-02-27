@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FireBaseInClassDemo</string>
+
+    <string-array name="genres">
+        <item>Hip-Hop</item>
+        <item>Pop</item>
+        <item>A&amp;B</item>
+        <item>Classic</item>
+        <item>Rock</item>
+        <item>Reggae</item>
+    </string-array>
+</resources>

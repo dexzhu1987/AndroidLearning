@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.huntertsai.firebaseinclassdemo.ArtistDetailsActivity">
+
+
+    <TextView
+        android:id="@+id/artist_name_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        tools:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/genre_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:text="@string/app_name">
+    </TextView>
+
+    <EditText
+        android:id="@+id/track_details"
+        android:hint="enter track name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_add_track"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Track"
+        android:onClick="add_Track"/>
+
+    <ListView
+        android:id="@+id/list_view_track"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+</LinearLayout>
