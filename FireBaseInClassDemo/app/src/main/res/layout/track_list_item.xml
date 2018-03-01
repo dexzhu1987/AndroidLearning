@@ -12,4 +12,12 @@
         android:layout_height="wrap_content"
         android:text="Derrick"/>
 
+    <TextView
+        android:id="@+id/track_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Hip-Hop"/>
+
+
 </LinearLayout>

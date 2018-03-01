@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,47 +22,35 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Created by Dexter on 2018-02-26.
  */
 
-public class TracksArrayAdapter extends ArrayAdapter<String> {
+public class TracksArrayAdapter extends ArrayAdapter<Track> {
     private Context context;
-    private List<String> tracks;
-    private List<String> tracksId;
+    private List<Track> tracks;
     private AlertDialog mAlertDialog;
     private String artistID;
 
-    public TracksArrayAdapter(@NonNull Context context, @NonNull List<String> objects, List<String> tracksId, String artistID) {
+    public  TracksArrayAdapter(@NonNull Context context, @NonNull List<Track> objects, String artistID) {
         super(context, R.layout.track_list_item, objects);
         this.context = context;
         this.tracks = objects;
-        this.tracksId = tracksId;
         this.artistID = artistID;
+
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final String trackname = tracks.get(position);
-        Log.i("TracksAdapter", trackname);
-        final String trackID = tracksId.get(position);
-        Log.i("TracksAdapter", trackID);
-        String message = "starts: ";
-        for (int i=0; i<tracks.size(); i++){
-            message += " : " + tracks.get(i);
-        }
-
-        Log.i("TracksAdapter", message);
-        String message2 = "starts: ";
-        for (int i=0; i<tracksId.size(); i++){
-            message2 += " : " + tracksId.get(i);
-        }
-        Log.i("TracksAdapter", message2);
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        final Track track = tracks.get(position);
 
         LayoutInflater layoutInflater = ((Activity) this.context).getLayoutInflater();
         View listView = layoutInflater.inflate(R.layout.track_list_item, null);
         TextView tv_name = listView.findViewById(R.id.artist_track_list);
+        TextView track_rating = listView.findViewById(R.id.track_rating);
+
 
         tv_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +61,31 @@ public class TracksArrayAdapter extends ArrayAdapter<String> {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
                 nameInput.setLayoutParams(params);
-                nameInput.setText(trackname);
+                nameInput.setText(track.getTitle());
+
+                final Spinner ratingInput = new Spinner(getContext());
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                ratingInput.setLayoutParams(params2);
+                List<String> list = Arrays.asList(getContext().getResources().getStringArray(R.array.rating));
+                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ratingInput.setAdapter(spinnerAdapter);
+                for (int i=0; i<list.size(); i++){
+                    if (track.getRating().equals(list.get(i))){
+                       int position=i;
+                       ratingInput.setSelection(position);
+                    }
+                }
+                spinnerAdapter.notifyDataSetChanged();
+
+                LinearLayout linearLayout = new LinearLayout(getContext());
+                linearLayout.setLayoutParams(params);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                linearLayout.addView(nameInput);
+                linearLayout.addView(ratingInput);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Edit information");
@@ -82,7 +93,9 @@ public class TracksArrayAdapter extends ArrayAdapter<String> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = nameInput.getText().toString();
-                        FirebaseDatabase.getInstance().getReference().child("artists").child(artistID).child ("track").child(trackID).setValue(name);
+                        String rating =  ratingInput.getSelectedItem().toString();
+                        FirebaseDatabase.getInstance().getReference().child("tracks").child(artistID).child (track.getTrackId()).child("title").setValue(name);
+                        FirebaseDatabase.getInstance().getReference().child("tracks").child(artistID).child (track.getTrackId()).child("rating").setValue(rating);
                         Toast.makeText(getContext(), name +  " is updated", Toast.LENGTH_LONG)
                                 .show();
                     }
@@ -92,7 +105,7 @@ public class TracksArrayAdapter extends ArrayAdapter<String> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = nameInput.getText().toString();
-                        FirebaseDatabase.getInstance().getReference().child("artists").child(artistID).child("track").child(trackID).setValue(null);
+                        FirebaseDatabase.getInstance().getReference().child("tracks").child(artistID).child(track.getTrackId()).setValue(null);
                         Toast.makeText(getContext(), name +  " is deleted", Toast.LENGTH_LONG)
                                 .show();
                     }
@@ -106,12 +119,13 @@ public class TracksArrayAdapter extends ArrayAdapter<String> {
                 });
 
                 mAlertDialog = builder.create();
-                mAlertDialog.setView(nameInput);
+                mAlertDialog.setView(linearLayout);
                 mAlertDialog.show();
             }
         });
 
-        tv_name.setText(trackname);
+        tv_name.setText(track.getTitle());
+        track_rating.setText(track.getRating());
 
         return listView;
 

@@ -104,6 +104,7 @@ public class Board extends FrameLayout {
             if (!isWIfi) {
                 restart();
             } else {
+                Log.d(TAG, "startgame with: id " + gameId);
                 FirebaseDatabase.getInstance().getReference().child("games")
                         .child(gameId)
                         .setValue(null);
@@ -222,6 +223,9 @@ public class Board extends FrameLayout {
     }
 
     private void drawPreviousShapes(Canvas canvas) {
+
+        Log.d(TAG, "dispatchDraw: prevous ");
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (field[row][col] != NONE) {
@@ -318,6 +322,7 @@ public class Board extends FrameLayout {
                         }, AI_TURN_DELAY);
                     }
                 } else {
+                    Log.d(TAG, "putting value into firebase??? " + row  + "_" + col);
                     FirebaseDatabase.getInstance().getReference().child("games")
                             .child(gameId)
                             .child(row + "_" + col)
@@ -425,7 +430,7 @@ public class Board extends FrameLayout {
                             int row = Integer.parseInt(key.substring(0, 1));
                             int col = Integer.parseInt(key.substring(2, 3));
                             Integer shape = dataSnapshot.getValue(Integer.class);
-
+                            Log.d(TAG, "on child add listerner: (value changed and notified) with row " + row + " and col " + col  );
                             if (field[row][col] == NONE) {
                                 drawShape(row, col, shape);
                             }

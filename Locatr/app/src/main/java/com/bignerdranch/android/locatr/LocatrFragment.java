@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -158,7 +159,7 @@ public class LocatrFragment extends SupportMapFragment {
         LocationRequest request = LocationRequest.create();
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         request.setNumUpdates(1);
-        request.setInterval(0);
+        request.setInterval(1);
         Log.i(TAG, "Before requesting");
         LocationServices.FusedLocationApi
                 .requestLocationUpdates(mClient, request, new LocationListener() {
@@ -169,6 +170,8 @@ public class LocatrFragment extends SupportMapFragment {
                     }
                 });
         Log.i(TAG, "after requesting");
+
+
     }
 
     private boolean hasLocationPermisssion(){
